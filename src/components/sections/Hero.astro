@@ -1,0 +1,104 @@
+---
+import { Image } from 'astro:assets';
+import { content, heroImage } from '@/config/content';
+import siteConfig from '@/config/site.config';
+import { locales } from '@/config/site.config';
+---
+
+<section data-review-id="hero-section" class="relative overflow-hidden pt-28 pb-16 md:pt-32 md:pb-20">
+  <div class="container">
+    <div class="grid items-center gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16">
+      <div class="order-2 lg:order-1">
+        {locales.map((locale) => (
+          <p class="section-label mb-4" data-lang={locale}>{content.hero[locale].eyebrow}</p>
+        ))}
+
+        <h1 data-review-target="hero-headline" class="font-display text-4xl leading-[1.08] text-foreground md:text-5xl lg:text-[3.25rem]">
+          {locales.map((locale) => (
+            <span data-lang={locale}>{content.hero[locale].headline}</span>
+          ))}
+        </h1>
+
+        <div class="mt-5 max-w-lg">
+          {locales.map((locale) => (
+            <p class="text-base text-foreground-muted md:text-lg" data-lang={locale}>
+              {content.hero[locale].subheadlineIntro}{' '}
+              {content.hero[locale].subheadline}
+            </p>
+          ))}
+        </div>
+
+        <div class="mt-8 flex flex-wrap gap-3">
+          {locales.map((locale) => (
+            <a
+              href="#contact"
+              data-review-target="hero-cta-primary"
+              class="inline-flex items-center justify-center rounded-full bg-foreground px-6 py-3 text-xs font-semibold uppercase tracking-[0.14em] text-background transition-colors hover:bg-accent"
+              data-lang={locale}
+            >
+              {content.hero[locale].cta}
+            </a>
+          ))}
+          {locales.map((locale) => (
+            <a
+              href="#gallery"
+              data-review-target="hero-cta-secondary"
+              class="inline-flex items-center justify-center rounded-full border border-border-strong px-6 py-3 text-xs font-semibold uppercase tracking-[0.14em] text-foreground transition-colors hover:border-accent hover:text-accent"
+              data-lang={locale}
+            >
+              {content.hero[locale].ctaSecondary}
+            </a>
+          ))}
+        </div>
+
+        {locales.map((locale) => (
+          <dl data-review-target="hero-stats" class="mt-10 overflow-hidden rounded-2xl border border-border/80 bg-background-secondary/50" data-lang={locale}>
+            <div class="grid grid-cols-3 divide-x divide-border/80 border-b border-border/80">
+              {content.stats[locale].map((stat) => (
+                <dt class="px-2 pb-3 pt-4 text-center text-[0.58rem] font-semibold uppercase leading-none tracking-[0.1em] text-foreground-subtle whitespace-nowrap sm:px-4 sm:text-[0.65rem] sm:tracking-[0.14em]">
+                  {stat.label}
+                </dt>
+              ))}
+            </div>
+            <div class="grid grid-cols-3 divide-x divide-border/80">
+              {content.stats[locale].map((stat) => (
+                <dd class="px-2 py-4 text-center font-display text-base font-medium leading-snug text-foreground sm:px-4 sm:py-5 sm:text-2xl">
+                  {stat.value}
+                </dd>
+              ))}
+            </div>
+          </dl>
+        ))}
+
+        {locales.map((locale) => (
+          <div class="mt-3 rounded-xl border border-border/80 bg-background-secondary/50 px-4 py-3" data-lang={locale}>
+            <p class="text-[0.65rem] font-semibold uppercase tracking-[0.16em] text-foreground-subtle">{content.languagesLabel[locale]}</p>
+            <ul class="mt-2 flex flex-wrap gap-x-4 gap-y-1">
+              {content.languages[locale].map((lang) => (
+                <li class="text-sm text-foreground">
+                  <span class="font-medium">{lang.name}</span>
+                  <span class="text-foreground-muted"> · {lang.level}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+
+      <div class="order-1 lg:order-2" data-review-target="hero-image">
+        <div class="relative mx-auto max-w-md lg:max-w-none">
+          <div class="absolute -inset-3 rounded-[2rem] bg-gradient-to-br from-accent/20 to-transparent"></div>
+          <Image
+            src={heroImage}
+            alt={`${siteConfig.name} — professional hostess`}
+            widths={[480, 720, 960]}
+            sizes="(max-width: 1024px) 90vw, 480px"
+            class="relative aspect-[4/5] w-full rounded-[1.75rem] object-cover object-top shadow-[0_24px_60px_-24px_rgba(42,38,34,0.35)]"
+            loading="eager"
+            fetchpriority="high"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,40 @@
+---
+import siteConfig from '@/config/site.config';
+import { content } from '@/config/content';
+import SocialLinks from '@/components/ui/SocialLinks.astro';
+import { locales } from '@/config/site.config';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="border-t border-border bg-background-secondary/50 py-10">
+  <div class="container flex flex-col gap-6">
+    <div class="flex flex-col gap-6 md:flex-row md:items-start md:justify-between">
+      <div>
+        <p class="text-xs uppercase tracking-[0.22em] text-foreground">{siteConfig.personName || ''}</p>
+        <div class="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-foreground-muted md:hidden">
+          <a href={`mailto:${siteConfig.email}`} class="transition-colors hover:text-accent">{siteConfig.email}</a>
+          <SocialLinks linkClass="transition-colors hover:text-accent" />
+        </div>
+      </div>
+      <div class="hidden flex-wrap items-center gap-x-5 gap-y-2 text-sm text-foreground-muted md:flex">
+        <a href={`mailto:${siteConfig.email}`} class="transition-colors hover:text-accent">{siteConfig.email}</a>
+        <SocialLinks linkClass="transition-colors hover:text-accent" />
+      </div>
+    </div>
+
+    <div class="border-t border-border pt-5">
+      <p class="text-sm text-foreground-muted">
+        © {year}{siteConfig.personName ? ` ${siteConfig.personName}.` : '.'}
+        {locales.map((locale) => (
+          <span data-lang={locale}> · {content.footer[locale].rights}</span>
+        ))}
+      </p>
+      <p class="mt-2 text-xs uppercase tracking-[0.16em] text-foreground-subtle">
+        <a href="https://hostesswebs.pl" class="transition-colors hover:text-accent" target="_blank" rel="noopener noreferrer">
+          hostesswebs.pl
+        </a>
+      </p>
+    </div>
+  </div>
+</footer>

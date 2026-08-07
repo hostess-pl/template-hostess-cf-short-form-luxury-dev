@@ -1,0 +1,346 @@
+---
+import { getImage } from 'astro:assets';
+import { content, galleryEvents } from '@/config/content';
+import { locales } from '@/config/site.config';
+
+function isLowCropEvent(event: { id: string; title: Record<string, string> }): boolean {
+  if (event.id === 'sopot') return true;
+  return Object.values(event.title).some((t) => /molo/i.test(t || ''));
+}
+
+const slides = await Promise.all(
+  galleryEvents.map(async (event, index) => {
+    let src: string;
+    let thumb: string;
+    if (event.image.kind === 'remote') {
+      src = event.image.src;
+      thumb = event.image.src;
+    } else {
+      const optimized = await getImage({ src: event.image.meta, width: 1400, height: 900, format: 'webp' });
+      const thumbImg = await getImage({ src: event.image.meta, width: 320, height: 200, format: 'webp' });
+      src = optimized.src;
+      thumb = thumbImg.src;
+    }
+    return {
+      id: event.id,
+      index,
+      src,
+      thumb,
+      video: event.video ?? null,
+      lowCrop: isLowCropEvent(event),
+      date: event.date,
+      title: event.title,
+      description: event.description,
+      alt: event.alt,
+    };
+  }),
+);
+
+const first = slides[0];
+---
+
+<section id="work" data-review-id="gallery-section" class="border-t border-border py-16 md:py-24">
+  <div class="container">
+    <div class="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+      <div class="max-w-xl">
+        {locales.map((locale) => (
+          <p class="section-label mb-3" data-lang={locale}>{content.work[locale].label}</p>
+        ))}
+        <h2 class="font-display text-3xl uppercase tracking-tight text-foreground md:text-5xl">
+          {locales.map((locale) => (
+            <span data-lang={locale}>{content.work[locale].title}</span>
+          ))}
+        </h2>
+        <p class="mt-3 text-foreground-muted">
+          {locales.map((locale) => (
+            <span data-lang={locale}>{content.work[locale].subtitle}</span>
+          ))}
+        </p>
+      </div>
+      <div class="flex gap-2">
+        <button type="button" id="work-prev" class="luxury-cta-ghost !px-3 !py-2" aria-label="Previous slide">←</button>
+        <button type="button" id="work-next" class="luxury-cta-ghost !px-3 !py-2" aria-label="Next slide">→</button>
+      </div>
+    </div>
+
+    <div class="mt-10 grid gap-6 lg:grid-cols-[1.4fr_0.35fr]">
+      <article
+        id="work-active"
+        class="relative overflow-hidden border border-border bg-card"
+        data-slides={JSON.stringify(slides)}
+        tabindex="0"
+        aria-roledescription="carousel"
+        aria-label="Portfolio events"
+      >
+        {first ? (
+          <>
+            <div class="relative aspect-[16/10] md:aspect-[16/9] bg-background-secondary">
+              <img
+                id="work-active-image"
+                src={first.src}
+                alt={first.alt.en}
+                class:list={['h-full w-full object-cover', first.lowCrop && 'object-[center_42%]']}
+              />
+              <video
+                id="work-active-video"
+                class="hidden absolute inset-0 h-full w-full object-cover"
+                controls
+                playsinline
+                preload="metadata"
+              ></video>
+
+              <button
+                type="button"
+                id="work-media-prev"
+                class="absolute left-3 top-1/2 z-10 hidden h-9 w-9 -translate-y-1/2 items-center justify-center border border-border bg-background/95 text-foreground shadow-sm transition-colors hover:bg-accent hover:text-background"
+                aria-label="Previous media"
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true" class="block shrink-0">
+                  <path d="M15 6L9 12L15 18" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </button>
+              <button
+                type="button"
+                id="work-media-next"
+                class="absolute right-3 top-1/2 z-10 hidden h-9 w-9 -translate-y-1/2 items-center justify-center border border-border bg-background/95 text-foreground shadow-sm transition-colors hover:bg-accent hover:text-background"
+                aria-label="Next media"
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true" class="block shrink-0">
+                  <path d="M9 6L15 12L9 18" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </button>
+              <p
+                id="work-media-label"
+                class="absolute left-1/2 top-3 z-10 hidden -translate-x-1/2 border border-border/80 bg-background/95 px-2.5 py-1 text-[0.65rem] font-semibold uppercase tracking-[0.12em] text-foreground-muted"
+              ></p>
+            </div>
+            <div class="border-t border-border p-6 md:p-8" id="work-active-meta">
+              <div class="flex items-start justify-between gap-4">
+                <div>
+                  <div class="flex flex-wrap items-center gap-2">
+                    <h3
+                      id="work-active-title"
+                      class:list={['font-display text-2xl text-foreground md:text-3xl', !String(first.title.en || '').trim() && 'hidden']}
+                    >
+                      {first.title.en}
+                    </h3>
+                  </div>
+                  <p
+                    id="work-active-description"
+                    class:list={['mt-3 max-w-2xl text-sm leading-relaxed text-foreground-muted md:text-base', !String(first.description.en || '').trim() && 'hidden']}
+                  >
+                    {first.description.en}
+                  </p>
+                </div>
+                <span
+                  id="work-active-date"
+                  class:list={['shrink-0 text-[0.65rem] font-medium uppercase tracking-[0.18em] text-accent', !String(first.date || '').trim() && 'hidden']}
+                >
+                  {first.date}
+                </span>
+              </div>
+            </div>
+          </>
+        ) : (
+          <p class="p-8 text-foreground-muted">No portfolio events yet.</p>
+        )}
+      </article>
+
+      <div class="flex gap-3 overflow-x-auto lg:flex-col lg:overflow-visible" id="work-thumbs" role="tablist" aria-label="Portfolio thumbnails">
+        {slides.map((slide, index) => (
+          <button
+            type="button"
+            class:list={[
+              'work-thumb shrink-0 overflow-hidden border text-left transition-colors',
+              index === 0 ? 'border-accent' : 'border-border hover:border-accent/60',
+            ]}
+            data-slide-index={index}
+            role="tab"
+            aria-selected={index === 0 ? 'true' : 'false'}
+          >
+            <img
+              src={slide.thumb}
+              alt=""
+              class:list={['aspect-[16/10] w-full object-cover lg:aspect-[5/3]', slide.lowCrop && 'object-[center_42%]']}
+              loading="lazy"
+            />
+            {String(slide.title.en || '').trim() || slide.video ? (
+              <span class="block px-3 py-2 text-[0.65rem] uppercase tracking-[0.14em] text-foreground-muted">
+                {String(slide.title.en || '').trim()}
+                {slide.video ? (String(slide.title.en || '').trim() ? ' · ▶' : '▶') : ''}
+              </span>
+            ) : null}
+          </button>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const active = document.getElementById('work-active');
+  const thumbs = document.getElementById('work-thumbs');
+  const prevBtn = document.getElementById('work-prev');
+  const nextBtn = document.getElementById('work-next');
+  if (!active || !thumbs) throw new Error('Work carousel missing');
+
+  const slides = JSON.parse(active.dataset.slides || '[]') as Array<{
+    index: number;
+    src: string;
+    video: string | null;
+    lowCrop: boolean;
+    title: Record<string, string>;
+    description: Record<string, string>;
+    date: string;
+    alt: Record<string, string>;
+  }>;
+
+  const locale = document.documentElement.dataset.locale || 'en';
+  let current = 0;
+  let mediaSlide = 0;
+
+  const imageEl = document.getElementById('work-active-image') as HTMLImageElement | null;
+  const videoEl = document.getElementById('work-active-video') as HTMLVideoElement | null;
+  const mediaPrev = document.getElementById('work-media-prev');
+  const mediaNext = document.getElementById('work-media-next');
+  const mediaLabel = document.getElementById('work-media-label');
+  const titleEl = document.getElementById('work-active-title');
+  const descriptionEl = document.getElementById('work-active-description');
+  const dateEl = document.getElementById('work-active-date');
+
+  const slideLabels: Record<string, { photo: string; video: string; of: string }> = {
+    en: { photo: 'Photo', video: 'Video', of: 'of' },
+    pl: { photo: 'Zdjęcie', video: 'Wideo', of: 'z' },
+    es: { photo: 'Foto', video: 'Video', of: 'de' },
+  };
+
+  function pauseVideo() {
+    if (!videoEl) return;
+    videoEl.pause();
+    videoEl.currentTime = 0;
+    videoEl.removeAttribute('src');
+    videoEl.load();
+  }
+
+  function updateMediaUI(slide: (typeof slides)[number]) {
+    const hasVideo = Boolean(slide.video);
+    const labels = slideLabels[locale] || slideLabels.en;
+
+    mediaPrev?.classList.toggle('hidden', !hasVideo);
+    mediaNext?.classList.toggle('hidden', !hasVideo);
+    mediaPrev?.classList.toggle('flex', hasVideo);
+    mediaNext?.classList.toggle('flex', hasVideo);
+    mediaLabel?.classList.toggle('hidden', !hasVideo);
+
+    if (!hasVideo) {
+      imageEl?.classList.remove('hidden');
+      videoEl?.classList.add('hidden');
+      pauseVideo();
+      mediaSlide = 0;
+      return;
+    }
+
+    if (mediaLabel) {
+      const kind = mediaSlide === 0 ? labels.photo : labels.video;
+      mediaLabel.textContent = `${kind} 1 ${labels.of} 2`;
+      if (mediaSlide === 1) mediaLabel.textContent = `${labels.video} 2 ${labels.of} 2`;
+      else mediaLabel.textContent = `${labels.photo} 1 ${labels.of} 2`;
+    }
+
+    if (mediaSlide === 0) {
+      imageEl?.classList.remove('hidden');
+      videoEl?.classList.add('hidden');
+      pauseVideo();
+    } else if (videoEl && slide.video) {
+      imageEl?.classList.add('hidden');
+      videoEl.classList.remove('hidden');
+      if (videoEl.getAttribute('src') !== slide.video) {
+        videoEl.src = slide.video;
+        videoEl.load();
+      }
+    }
+  }
+
+  function renderSlide(index: number) {
+    if (!slides[index]) return;
+    current = index;
+    mediaSlide = 0;
+    const slide = slides[index];
+    if (imageEl) {
+      imageEl.src = slide.src;
+      imageEl.alt = slide.alt[locale] || slide.alt.en;
+      imageEl.classList.toggle('object-[center_42%]', Boolean(slide.lowCrop));
+    }
+    const titleText = slide.title[locale] || slide.title.en || '';
+    const descText = slide.description[locale] || slide.description.en || '';
+    const dateText = slide.date || '';
+    if (titleEl) {
+      titleEl.textContent = titleText;
+      titleEl.classList.toggle('hidden', !String(titleText).trim());
+    }
+    if (descriptionEl) {
+      descriptionEl.textContent = descText;
+      descriptionEl.classList.toggle('hidden', !String(descText).trim());
+    }
+    if (dateEl) {
+      dateEl.textContent = dateText;
+      dateEl.classList.toggle('hidden', !String(dateText).trim());
+    }
+
+    updateMediaUI(slide);
+
+    thumbs?.querySelectorAll('.work-thumb').forEach((thumb, thumbIndex) => {
+      const selected = thumbIndex === index;
+      thumb.setAttribute('aria-selected', selected ? 'true' : 'false');
+      thumb.classList.toggle('border-accent', selected);
+      thumb.classList.toggle('border-border', !selected);
+    });
+  }
+
+  thumbs?.querySelectorAll('[data-slide-index]').forEach((button) => {
+    button.addEventListener('click', () => {
+      const index = Number((button as HTMLElement).dataset.slideIndex);
+      if (!Number.isNaN(index)) renderSlide(index);
+    });
+  });
+
+  prevBtn?.addEventListener('click', () => {
+    if (slides.length === 0) return;
+    renderSlide((current - 1 + slides.length) % slides.length);
+  });
+
+  nextBtn?.addEventListener('click', () => {
+    if (slides.length === 0) return;
+    renderSlide((current + 1) % slides.length);
+  });
+
+  mediaPrev?.addEventListener('click', (event) => {
+    event.stopPropagation();
+    const slide = slides[current];
+    if (!slide?.video) return;
+    mediaSlide = mediaSlide === 0 ? 1 : 0;
+    updateMediaUI(slide);
+  });
+
+  mediaNext?.addEventListener('click', (event) => {
+    event.stopPropagation();
+    const slide = slides[current];
+    if (!slide?.video) return;
+    mediaSlide = mediaSlide === 0 ? 1 : 0;
+    updateMediaUI(slide);
+  });
+
+  active.addEventListener('keydown', (event) => {
+    if (slides.length === 0) return;
+    if (event.key === 'ArrowLeft') {
+      event.preventDefault();
+      renderSlide((current - 1 + slides.length) % slides.length);
+    }
+    if (event.key === 'ArrowRight') {
+      event.preventDefault();
+      renderSlide((current + 1) % slides.length);
+    }
+  });
+
+  if (slides.length > 0) renderSlide(0);
+</script>

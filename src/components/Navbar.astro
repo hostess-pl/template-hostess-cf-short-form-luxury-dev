@@ -1,0 +1,173 @@
+---
+import siteConfig from '@/config/site.config';
+import { content, getShowExperienceSection } from '@/config/content';
+import { locales, getLocales } from '@/config/site.config';
+import type { Locale } from '@/config/site.config';
+
+const navKeys = (getShowExperienceSection()
+  ? ['work', 'about', 'experience', 'contact']
+  : ['work', 'about', 'contact']) as readonly ('work' | 'about' | 'experience' | 'contact')[];
+const localeLabels: Record<Locale, string> = { en: 'EN', pl: 'PL', es: 'ES' };
+const activeLocales = getLocales();
+const toggleLocales = activeLocales.map((id) => ({ id, label: localeLabels[id] }));
+const showLocaleSwitcher = toggleLocales.length > 1;
+const languageHeading: Record<Locale, string> = {
+  en: 'Language',
+  pl: 'Język',
+  es: 'Idioma',
+};
+
+const initialsSource = (siteConfig.personName || siteConfig.name).trim();
+const nameParts = initialsSource.split(/\s+/).filter(Boolean);
+const navInitials =
+  nameParts.length >= 2
+    ? `${nameParts[0][0]}${nameParts[nameParts.length - 1][0]}`.toUpperCase()
+    : (nameParts[0] || siteConfig.name).slice(0, 2).toUpperCase();
+---
+
+<header data-review-id="site-header" class="fixed inset-x-0 top-[var(--draft-banner-height,0px)] z-50 border-b border-border/70 bg-background/90 backdrop-blur-md">
+  <div class="container flex h-16 items-center justify-between gap-4 md:h-[4.5rem]">
+    <a href="#hero" class="text-xs font-normal uppercase tracking-[0.24em] text-foreground md:text-sm">
+      <span class="md:hidden">{navInitials}</span>
+      <span class="hidden md:inline">{siteConfig.name}</span>
+    </a>
+
+    <nav class="hidden items-center gap-8 lg:flex" aria-label="Main">
+      {navKeys.map((key) =>
+        activeLocales.map((locale) => (
+          <a href={`#${key}`} class="text-[0.72rem] font-normal uppercase tracking-[0.18em] text-foreground-muted transition-colors hover:text-accent" data-lang={locale}>
+            {content.nav[locale][key]}
+          </a>
+        )),
+      )}
+      {showLocaleSwitcher ? (
+        <div class="flex border border-border p-0.5 text-[0.65rem] font-normal uppercase tracking-[0.14em]" role="group" aria-label="Language">
+          {toggleLocales.map(({ id, label }) => (
+            <button
+              type="button"
+              data-locale-btn={id}
+              class="px-2.5 py-1 transition-colors aria-pressed:bg-accent aria-pressed:text-background"
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+      ) : null}
+    </nav>
+
+    <div class="flex items-center gap-3">
+      {activeLocales.map((locale) => (
+        <a
+          href="#contact"
+          data-review-target="nav-cta"
+          class="luxury-cta hidden !px-4 !py-2 lg:inline-flex"
+          data-lang={locale}
+        >
+          {content.nav[locale].cta}
+        </a>
+      ))}
+
+      <button
+        type="button"
+        id="mobile-menu-btn"
+        data-review-target="nav-mobile-menu"
+        class="inline-flex h-10 w-10 items-center justify-center border border-border lg:hidden"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+        aria-label="Open menu"
+      >
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+          <path d="M2 5h14M2 9h14M2 13h14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <div id="mobile-menu-backdrop" class="fixed inset-0 z-40 hidden bg-background/70 lg:hidden" aria-hidden="true"></div>
+
+  <div id="mobile-menu" class="relative z-50 hidden border-t border-border bg-background lg:hidden">
+    <nav class="container flex flex-col gap-1 py-4" aria-label="Mobile">
+      {navKeys.map((key) =>
+        activeLocales.map((locale) => (
+          <a
+            href={`#${key}`}
+            class="mobile-nav-link px-3 py-2.5 text-sm uppercase tracking-[0.14em] text-foreground-muted transition-colors hover:text-accent"
+            data-lang={locale}
+          >
+            {content.nav[locale][key]}
+          </a>
+        )),
+      )}
+    </nav>
+
+    {showLocaleSwitcher ? (
+      <div class="container border-t border-border py-4">
+        <div class="mb-2 px-3 text-[0.65rem] uppercase tracking-[0.16em] text-foreground-subtle">
+          {activeLocales.map((locale) => (
+            <span data-lang={locale}>{languageHeading[locale]}</span>
+          ))}
+        </div>
+        <div class="mx-3 flex w-fit border border-border p-0.5 text-xs font-normal" role="group" aria-label="Language">
+          {toggleLocales.map(({ id, label }) => (
+            <button
+              type="button"
+              data-locale-btn={id}
+              class="px-2.5 py-1 transition-colors aria-pressed:bg-accent aria-pressed:text-background"
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+      </div>
+    ) : null}
+
+    <div class="container border-t border-border py-4">
+      <div class="px-3">
+        {activeLocales.map((locale) => (
+          <a href="#contact" class="mobile-nav-link luxury-cta inline-flex w-full justify-center" data-lang={locale}>
+            {content.nav[locale].cta}
+          </a>
+        ))}
+      </div>
+    </div>
+  </div>
+</header>
+
+<script>
+  const menuBtn = document.getElementById('mobile-menu-btn');
+  const menu = document.getElementById('mobile-menu');
+  const backdrop = document.getElementById('mobile-menu-backdrop');
+
+  function closeMenu() {
+    menu?.classList.add('hidden');
+    backdrop?.classList.add('hidden');
+    menuBtn?.setAttribute('aria-expanded', 'false');
+    menuBtn?.setAttribute('aria-label', 'Open menu');
+  }
+
+  function openMenu() {
+    menu?.classList.remove('hidden');
+    backdrop?.classList.remove('hidden');
+    menuBtn?.setAttribute('aria-expanded', 'true');
+    menuBtn?.setAttribute('aria-label', 'Close menu');
+  }
+
+  function isMenuOpen() {
+    return menu && !menu.classList.contains('hidden');
+  }
+
+  menuBtn?.addEventListener('click', () => {
+    if (isMenuOpen()) closeMenu();
+    else openMenu();
+  });
+
+  backdrop?.addEventListener('click', closeMenu);
+
+  document.querySelectorAll('.mobile-nav-link').forEach((link) => {
+    link.addEventListener('click', closeMenu);
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && isMenuOpen()) closeMenu();
+  });
+</script>

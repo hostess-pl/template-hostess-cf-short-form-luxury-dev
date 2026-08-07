@@ -1,0 +1,49 @@
+---
+import { content, backgroundEntries } from '@/config/content';
+import { locales } from '@/config/site.config';
+
+---
+
+<section id="experience" data-review-id="experience-section" class="border-b border-border bg-background-secondary/30 py-16 md:py-20 lg:py-24">
+  <div class="container max-w-5xl">
+    {locales.map((locale) => (
+      <p class="section-label mb-3" data-lang={locale}>{content.background[locale].label}</p>
+    ))}
+    <h2 class="font-display text-3xl text-foreground md:text-5xl">
+      {locales.map((locale) => (
+        <span data-lang={locale}>{content.background[locale].title}</span>
+      ))}
+    </h2>
+    {locales.some((locale) => Boolean(content.background[locale].subtitle)) ? (
+      <p class="mt-4 max-w-2xl text-sm text-foreground-muted md:text-base">
+        {locales.map((locale) => (
+          <span data-lang={locale}>{content.background[locale].subtitle}</span>
+        ))}
+      </p>
+    ) : null}
+
+    <div class="mt-10 border border-border">
+      {backgroundEntries.map((entry) => (
+          <article class="grid gap-3 border-b border-border px-5 py-6 last:border-b-0 md:grid-cols-[9rem_1fr] md:px-8">
+            <time class="text-sm font-medium text-accent md:text-base">
+              {locales.map((locale) => (
+                <span data-lang={locale}>{entry.date[locale]}</span>
+              ))}
+            </time>
+            <div>
+              <h3 class="font-display text-xl text-foreground">
+                {locales.map((locale) => (
+                  <span data-lang={locale}>{entry.title[locale]}</span>
+                ))}
+              </h3>
+              <p class="mt-2 text-sm leading-relaxed text-foreground-muted">
+                {locales.map((locale) => (
+                  <span data-lang={locale}>{entry.description[locale]}</span>
+                ))}
+              </p>
+            </div>
+          </article>
+      ))}
+    </div>
+  </div>
+</section>

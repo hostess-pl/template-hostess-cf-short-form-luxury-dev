@@ -1,0 +1,29 @@
+---
+import { locales } from '@/config/site.config';
+
+interface Props {
+  used: boolean;
+  class?: string;
+}
+
+const { used, class: className = '' } = Astro.props;
+
+const labels: Record<(typeof locales)[number], { used: string; unused: string }> = {
+  en: { used: 'Used', unused: 'Unused' },
+  pl: { used: 'Używane', unused: 'Nieużywane' },
+  es: { used: 'Usado', unused: 'Sin usar' },
+};
+---
+
+<span
+  class:list={[
+    'inline-flex shrink-0 items-center rounded-full px-2 py-0.5 text-[0.6rem] font-bold uppercase tracking-[0.08em]',
+    used ? 'bg-emerald-500/15 text-emerald-700' : 'bg-foreground/8 text-foreground-subtle',
+    className,
+  ]}
+  data-field-usage={used ? 'used' : 'unused'}
+>
+  {locales.map((locale) => (
+    <span data-lang={locale}>{used ? labels[locale].used : labels[locale].unused}</span>
+  ))}
+</span>

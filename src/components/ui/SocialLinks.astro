@@ -1,0 +1,41 @@
+---
+import siteConfig from '@/config/site.config';
+import SocialIcon from '@/components/ui/SocialIcon.astro';
+import FixtureInventedBadge from '@/components/ui/FixtureInventedBadge.astro';
+
+interface Props {
+  class?: string;
+  linkClass?: string;
+}
+
+const { class: className = '', linkClass = '' } = Astro.props;
+
+const platforms = [
+  { key: 'profile.socials.instagram', label: 'Instagram', platform: 'instagram' as const, url: siteConfig.instagram },
+  { key: 'profile.socials.facebook', label: 'Facebook', platform: 'facebook' as const, url: siteConfig.facebook },
+  { key: 'profile.socials.tiktok', label: 'TikTok', platform: 'tiktok' as const, url: siteConfig.tiktok },
+  { key: 'profile.socials.linkedin', label: 'LinkedIn', platform: 'linkedin' as const, url: siteConfig.linkedin },
+].filter((platform) => platform.url.trim().length > 0);
+---
+
+{platforms.length > 0 && (
+  <div class:list={['flex flex-wrap gap-3', className]}>
+    {platforms.map((platform) => (
+      <a
+        href={platform.url}
+        target="_blank"
+        rel="noopener noreferrer"
+        class:list={[
+          'inline-flex items-center gap-2 rounded-full border border-border/80 bg-card px-3 py-1.5 text-sm text-foreground-muted transition-colors hover:border-accent/40 hover:text-accent',
+          linkClass,
+        ]}
+        data-social={platform.platform}
+        data-review-target={`contact-social-${platform.platform}`}
+      >
+        <SocialIcon name={platform.platform} size={15} class="text-accent" />
+        <span>{platform.label}</span>
+        <FixtureInventedBadge fieldKey={platform.key} />
+      </a>
+    ))}
+  </div>
+)}

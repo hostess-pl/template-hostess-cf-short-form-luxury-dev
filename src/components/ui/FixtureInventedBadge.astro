@@ -1,0 +1,34 @@
+---
+import { REVIEW_MODE_ENABLED } from 'astro:env/server';
+import { isFixtureInvented } from '@/lib/fixtureMeta';
+import { locales } from '@/config/site.config';
+
+interface Props {
+  fieldKey: string;
+  class?: string;
+}
+
+const { fieldKey, class: className = '' } = Astro.props;
+
+const show = REVIEW_MODE_ENABLED && isFixtureInvented(fieldKey);
+
+const labels: Record<(typeof locales)[number], string> = {
+  en: 'Invented',
+  pl: 'Wymyślone',
+  es: 'Inventado',
+};
+---
+
+{show && (
+  <span
+    class:list={[
+      'inline-flex shrink-0 items-center rounded-full bg-accent/15 px-2 py-0.5 text-[0.6rem] font-bold uppercase tracking-[0.08em] text-accent',
+      className,
+    ]}
+    data-fixture-invented={fieldKey}
+  >
+    {locales.map((locale) => (
+      <span data-lang={locale}>{labels[locale]}</span>
+    ))}
+  </span>
+)}

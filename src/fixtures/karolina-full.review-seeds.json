@@ -1,0 +1,122 @@
+[
+  {
+    "message": "TikTok and LinkedIn are invented fixture URLs — Karolina did not provide them in the form.",
+    "page_path": "/",
+    "locale": "en",
+    "selector": "[data-review-target=\"contact-socials\"]",
+    "rel_x": 0.4,
+    "rel_y": 0.6,
+    "doc_x": 500,
+    "doc_y": 3200,
+    "annotation_type": "point",
+    "author_name": "Dev seed"
+  },
+  {
+    "message": "This 6th gallery event (Tri-city Fashion Week) is invented for max fixture coverage — confirm copy with Karolina before production.",
+    "page_path": "/",
+    "locale": "en",
+    "selector": "[data-gallery-id=\"event-6\"]",
+    "rel_x": 0.5,
+    "rel_y": 0.35,
+    "doc_x": 640,
+    "doc_y": 2200,
+    "annotation_type": "point",
+    "author_name": "Dev seed"
+  },
+  {
+    "message": "Marketing (1st year) at WSB Merito Gdańsk is invented — badge should appear on this degree row in review mode.",
+    "page_path": "/",
+    "locale": "en",
+    "selector": "[data-review-target=\"about-degree-study-3\"]",
+    "rel_x": 0.6,
+    "rel_y": 0.5,
+    "doc_x": 760,
+    "doc_y": 1180,
+    "annotation_type": "point",
+    "author_name": "Dev seed"
+  },
+  {
+    "message": "Third study (Marketing, 1st year) is invented — Karolina has 2 degrees on the live site.",
+    "page_path": "/",
+    "locale": "en",
+    "selector": "[data-review-id=\"about-section\"]",
+    "rel_x": 0.72,
+    "rel_y": 0.82,
+    "doc_x": 920,
+    "doc_y": 1180,
+    "annotation_type": "point",
+    "author_name": "Dev seed"
+  },
+  {
+    "message": "Profile details panel is dev-only. Height and clothing size are fixture extras — not shown on the marketing page.",
+    "page_path": "/",
+    "locale": "en",
+    "selector": "[data-review-target=\"profile-extras\"]",
+    "rel_x": 0.3,
+    "rel_y": 0.4,
+    "doc_x": 380,
+    "doc_y": 3400,
+    "annotation_type": "point",
+    "author_name": "Dev seed"
+  },
+  {
+    "message": "Professional skills list is invented for normalizer/review testing.",
+    "page_path": "/",
+    "locale": "en",
+    "selector": "[data-review-target=\"profile-professional-skills\"]",
+    "rel_x": 0.5,
+    "rel_y": 0.6,
+    "doc_x": 640,
+    "doc_y": 3520,
+    "annotation_type": "point",
+    "author_name": "Dev seed"
+  },
+  {
+    "message": "Driving license = Yes in fixture; has car = No. Verify against latest Tally submission.",
+    "page_path": "/",
+    "locale": "pl",
+    "selector": "[data-review-target=\"profile-driving-license\"]",
+    "rel_x": 0.5,
+    "rel_y": 0.5,
+    "doc_x": 640,
+    "doc_y": 3450,
+    "annotation_type": "point",
+    "author_name": "Dev seed"
+  },
+  {
+    "message": "Stats column shows professional status from profileExtras — not duplicated in the dev panel.",
+    "page_path": "/",
+    "locale": "en",
+    "selector": "[data-review-target=\"hero-stats\"]",
+    "rel_x": 0.85,
+    "rel_y": 0.55,
+    "doc_x": 1080,
+    "doc_y": 420,
+    "annotation_type": "point",
+    "author_name": "Dev seed"
+  },
+  {
+    "message": "Onel1fe event includes video (onelife.mp4) — check lightbox photo/video toggle on mobile.",
+    "page_path": "/",
+    "locale": "en",
+    "selector": "[data-gallery-id=\"event-4\"]",
+    "rel_x": 0.5,
+    "rel_y": 0.4,
+    "doc_x": 640,
+    "doc_y": 1900,
+    "annotation_type": "point",
+    "author_name": "Dev seed"
+  },
+  {
+    "message": "Employment history has 3 rows — third row (Olivia Star) matches Karolina reference.",
+    "page_path": "/",
+    "locale": "en",
+    "selector": "[data-review-id=\"experience-section\"]",
+    "rel_x": 0.5,
+    "rel_y": 0.75,
+    "doc_x": 640,
+    "doc_y": 2800,
+    "annotation_type": "point",
+    "author_name": "Dev seed"
+  }
+]

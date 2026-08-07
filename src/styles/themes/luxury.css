@@ -1,0 +1,17 @@
+:root {
+  --background: #0d0c0a;
+  --background-secondary: #141210;
+  --foreground: #f5f0e8;
+  --foreground-muted: #b8aea0;
+  --foreground-subtle: #7a7268;
+  --accent: #c9a84c;
+  --accent-hover: #dbb95a;
+  --border: color-mix(in srgb, #c9a84c 22%, #0d0c0a);
+  --border-strong: color-mix(in srgb, #c9a84c 45%, #f5f0e8 8%);
+  --card: #12100e;
+  --ring: #c9a84c;
+  --error: #e07070;
+
+  --theme-font-sans: 'Outfit Variable', 'Outfit', system-ui, sans-serif;
+  --theme-font-display: 'Bodoni Moda', 'Bodoni 11', Georgia, serif;
+}

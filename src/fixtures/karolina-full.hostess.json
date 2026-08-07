@@ -1,0 +1,181 @@
+{
+  "submissionId": "karolina-dev-full",
+  "slug": "karolina-konieczna-dev",
+  "profile": {
+    "displayName": "Karolina",
+    "legalName": "Karolina Konieczna",
+    "email": "karolinakonieczna.gm@gmail.com",
+    "phone": "+48 512 345 678",
+    "location": "Tri-city",
+    "workCities": ["Gdynia", "Sopot", "Gdańsk"],
+    "socials": {
+      "instagram": "https://instagram.com/_kkonieczna_",
+      "tiktok": "https://tiktok.com/@kkonieczna_host",
+      "linkedin": "https://linkedin.com/in/karolina-konieczna",
+      "facebook": "https://www.facebook.com/karolina.konieczna.31586"
+    }
+  },
+  "bio": {
+    "short": "I combine professionalism with warmth — so every guest feels welcome and cared for."
+  },
+  "copy": {
+    "headline": "A first impression that builds trust.",
+    "greeting": "Hi, I'm Karolina!",
+    "profile": "For over 3 years, I've worked as a professional hostess at international conferences, brand activations and cultural events.",
+    "aboutLead": "I combine professionalism with warmth — so every guest feels welcome and cared for.",
+    "experienceSummary": "I represent brands at international conferences, premium events, cultural occasions, and promotional campaigns. Valued for reliability, communication skills, and representing brands at the highest level."
+  },
+  "locales": ["en", "pl", "es"],
+  "languages": [
+    { "name": "Polish", "level": "native" },
+    { "name": "English", "level": "C1" },
+    { "name": "Spanish", "level": "A2" }
+  ],
+  "skills": [],
+  "traits": [
+    "Reliability",
+    "Fluent English",
+    "Brand representation",
+    "Guest care",
+    "High personal culture",
+    "Punctuality"
+  ],
+  "professionalSkills": [
+    "Event coordination",
+    "Social media content support",
+    "VIP guest management"
+  ],
+  "events": [
+    {
+      "id": "event-1",
+      "title": "Ukraine Recovery Conference",
+      "description": "Welcomed and directed international guests in English, assisted with preparation, and distributed conference souvenirs for VIP attendees including politicians.",
+      "date": "Jun 2026",
+      "imageFile": "event-1.jpg"
+    },
+    {
+      "id": "event-2",
+      "title": "Kinder Bueno — Opera Leśna",
+      "description": "Brand activation with guest photos, product sampling, and on-site engagement.",
+      "date": "2026",
+      "imageFile": "event-2.jpg"
+    },
+    {
+      "id": "event-3",
+      "title": "Apteo — Gdańsk Airport",
+      "description": "Product sampling and brand promotion at Lech Wałęsa Airport.",
+      "date": "2025",
+      "imageFile": "event-3.jpg"
+    },
+    {
+      "id": "event-4",
+      "title": "Onel1fe — Luxury Automotive",
+      "description": "International luxury brand event — guest engagement and social media content.",
+      "date": "Jun 2025",
+      "imageFile": "event-4.jpg",
+      "videoFile": "onelife.mp4"
+    },
+    {
+      "id": "event-5",
+      "title": "Sir Albert's Tea — Sopot Pier",
+      "description": "Stand setup, product sampling, and guest activities on Sopot pier.",
+      "date": "2024–2025",
+      "imageFile": "event-5.jpg"
+    },
+    {
+      "id": "event-6",
+      "title": "Tri-city Fashion Week — VIP Lounge",
+      "description": "Invented fixture event: guest registration, lounge hospitality, and brand ambassador support for a regional fashion showcase.",
+      "date": "Mar 2026",
+      "imageFile": "event-6.jpg"
+    }
+  ],
+  "employment": [
+    {
+      "id": "employment-1",
+      "company": "Municipal Theatre, Gdynia",
+      "period": "2024 — present",
+      "duties": "Audience services — welcoming guests and supporting a polished theatre experience."
+    },
+    {
+      "id": "employment-2",
+      "company": "Gelatomania Café, Sopot",
+      "period": "2023",
+      "duties": "Front-of-house service in a premium café environment."
+    },
+    {
+      "id": "employment-3",
+      "company": "Olivia Star Restaurant",
+      "period": "2022",
+      "duties": "Guest-facing hospitality in a high-end dining setting."
+    }
+  ],
+  "studies": [
+    {
+      "field": "Psychology",
+      "university": "University of Gdańsk",
+      "endYear": "2nd year"
+    },
+    {
+      "field": "International Economic Relations",
+      "university": "University of Gdańsk",
+      "endYear": "3rd year"
+    },
+    {
+      "field": "Marketing",
+      "university": "WSB Merito Gdańsk",
+      "endYear": "1st year"
+    }
+  ],
+  "experience": {
+    "since": "2021-01-01",
+    "brands": "Kinder Bueno, Apteo, Onel1fe, Sir Albert's Tea, Ukraine Recovery Conference",
+    "eventTypes": "Hostess roles at conferences, brand activations, and premium events."
+  },
+  "education": {
+    "university": "University of Gdańsk",
+    "field": "Psychology",
+    "isStudent": true
+  },
+  "profileExtras": {
+    "birthDate": "2002-05-14",
+    "professionalStatus": "Student",
+    "heightCm": 168,
+    "clothingSize": "S",
+    "hairColor": "Brown",
+    "eyeColor": "Brown",
+    "drivingLicense": true,
+    "hasCar": false
+  },
+  "branding": {
+    "palette": "Gold and Cream",
+    "style": "Elegant",
+    "font": "Playfair Display",
+    "themeColor": "#C4A46B",
+    "backgroundColor": "#FDFAF6"
+  },
+  "domain": {
+    "mode": "Własna domena",
+    "desiredName": "karolinakonieczna",
+    "extension": ".com"
+  },
+  "analytics": {
+    "siteId": "karolina-konieczna-dev",
+    "subprojectId": "portfolio"
+  },
+  "fixtureInvented": [
+    "profile.phone",
+    "profile.socials.tiktok",
+    "profile.socials.linkedin",
+    "events.event-6",
+    "studies.2",
+    "professionalSkills",
+    "profileExtras.birthDate",
+    "profileExtras.heightCm",
+    "profileExtras.clothingSize",
+    "profileExtras.hairColor",
+    "profileExtras.eyeColor",
+    "profileExtras.drivingLicense",
+    "profileExtras.hasCar"
+  ]
+}

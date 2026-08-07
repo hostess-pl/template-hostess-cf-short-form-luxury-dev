@@ -1,0 +1,70 @@
+---
+import siteConfig from '@/config/site.config';
+import { content } from '@/config/content';
+import ContactForm from '@/components/ui/forms/ContactForm.astro';
+import SocialLinks from '@/components/ui/SocialLinks.astro';
+import FixtureInventedBadge from '@/components/ui/FixtureInventedBadge.astro';
+import { locales } from '@/config/site.config';
+
+const contactLabel: Record<(typeof locales)[number], string> = {
+  en: 'Contact',
+  pl: 'Kontakt',
+  es: 'Contacto',
+};
+---
+
+<section id="contact" data-review-id="contact-section" class="border-t border-border py-16 md:py-24">
+  <div class="container">
+    <div class="grid gap-12 lg:grid-cols-[0.85fr_1.15fr] lg:gap-16">
+      <div>
+        {locales.map((locale) => (
+          <p class="section-label mb-3" data-lang={locale}>{contactLabel[locale]}</p>
+        ))}
+        <h2 class="font-display text-[clamp(1.35rem,3.2vw,2.35rem)] uppercase tracking-tight text-foreground">
+          {locales.map((locale) => (
+            <span data-lang={locale} class="inline">
+              <span class="whitespace-nowrap">
+                {content.contact[locale].title}{' '}
+                <span class="text-accent italic normal-case">{content.contact[locale].accentWord}</span>
+              </span>
+            </span>
+          ))}
+        </h2>
+        <p class="mt-4 text-lg text-foreground-muted">
+          {locales.map((locale) => (
+            <span data-lang={locale}>{content.contact[locale].subtitle}</span>
+          ))}
+        </p>
+
+        <div class="mt-10 space-y-5 border-t border-border pt-8">
+          <h3 class="text-[0.65rem] font-medium uppercase tracking-[0.2em] text-foreground-subtle">
+            {locales.map((locale) => (
+              <span data-lang={locale}>{content.contact[locale].directTitle}</span>
+            ))}
+          </h3>
+          <a href={`mailto:${siteConfig.email}`} data-review-target="contact-email" class="block text-base text-foreground transition-colors hover:text-accent">
+            {siteConfig.email}
+          </a>
+          {siteConfig.phone && (
+            <div class="flex flex-wrap items-center gap-2">
+              <a href={`tel:${siteConfig.phone.replace(/\s/g, '')}`} data-review-target="contact-phone" class="block text-base text-foreground transition-colors hover:text-accent">
+                {siteConfig.phone}
+              </a>
+              <FixtureInventedBadge fieldKey="profile.phone" />
+            </div>
+          )}
+          <p class="text-sm text-foreground-muted">
+            {locales.map((locale) => (
+              <span data-lang={locale}>{content.contact[locale].location}</span>
+            ))}
+          </p>
+          <div data-review-target="contact-socials">
+            <SocialLinks linkClass="transition-colors hover:text-accent" />
+          </div>
+        </div>
+      </div>
+
+      <ContactForm />
+    </div>
+  </div>
+</section>
