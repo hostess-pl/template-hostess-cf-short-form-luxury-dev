@@ -63,6 +63,10 @@ export const hostessSchema = z.object({
   submissionId: z.string().min(1).max(80),
   slug: z.string().min(1).max(80),
   contactRef: z.string().max(80).default(''),
+  /** Short-form intake signal — preserved through tip Zod for GHA → GkEk callback. */
+  intake: z.string().max(40).optional().default(''),
+  /** Tally form id (e.g. rjRXoX / RGQDL9) — kept for mvp/lite deposit skip. */
+  tallyFormId: z.string().max(40).optional().default(''),
   profile: z.object({
     displayName: z.string().min(1).max(120),
     legalName: z.string().min(1).max(160),
