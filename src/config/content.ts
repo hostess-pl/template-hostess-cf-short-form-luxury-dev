@@ -1,6 +1,6 @@
 import type { ImageMetadata } from 'astro';
 import type { Locale } from './site.config';
-import { publicCopyForLocale } from '@/lib/cms/i18n';
+import { appearanceTextForPublic, languagesForPublic, publicCopyForLocale } from '@/lib/cms/i18n';
 import { loadHostess } from '@/lib/hostess';
 
 let _bundleRef: ReturnType<typeof loadHostess> | null = null
@@ -414,6 +414,7 @@ function buildContentBundle() {
   function buildAppearanceFacts(locale: Locale): AppearanceFact[] {
     const appearance = hostess.appearance ?? { height: '', dressSize: '', hairColor: '', eyeColor: '' };
     const mobility = hostess.mobility ?? { drivingLicense: '', hasCar: false };
+    const text = appearanceTextForPublic(hostess as unknown as Record<string, unknown>, locale);
     const labels: Record<Locale, Record<string, string>> = {
       en: { height: 'Height', size: 'Size', hair: 'Hair', eyes: 'Eyes', license: 'License', car: 'Car' },
       pl: { height: 'Wzrost', size: 'Rozmiar', hair: 'Włosy', eyes: 'Oczy', license: 'Prawo jazdy', car: 'Auto' },
@@ -427,11 +428,11 @@ function buildContentBundle() {
     if (appearance.dressSize) {
       facts.push({ id: 'dress', icon: 'dress', label: labels[locale].size, value: appearance.dressSize });
     }
-    if (appearance.hairColor) {
-      facts.push({ id: 'hair', icon: 'hair', label: labels[locale].hair, value: appearance.hairColor });
+    if (text.hairColor) {
+      facts.push({ id: 'hair', icon: 'hair', label: labels[locale].hair, value: text.hairColor });
     }
-    if (appearance.eyeColor) {
-      facts.push({ id: 'eyes', icon: 'eyes', label: labels[locale].eyes, value: appearance.eyeColor });
+    if (text.eyeColor) {
+      facts.push({ id: 'eyes', icon: 'eyes', label: labels[locale].eyes, value: text.eyeColor });
     }
     if (mobility.drivingLicense) {
       facts.push({
@@ -670,9 +671,9 @@ function buildContentBundle() {
       es: 'Idiomas',
     },
     languages: {
-      en: hostess.languages,
-      pl: hostess.languages,
-      es: hostess.languages,
+      en: languagesForPublic(hostess as unknown as Record<string, unknown>, 'en'),
+      pl: languagesForPublic(hostess as unknown as Record<string, unknown>, 'pl'),
+      es: languagesForPublic(hostess as unknown as Record<string, unknown>, 'es'),
     },
     about: {
       en: buildAbout('en'),

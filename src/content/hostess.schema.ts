@@ -18,14 +18,25 @@ export const hostessEventSchema = z.object({
   title: z.string().max(200).default(''),
   description: z.string().max(2000).default(''),
   date: z.string().max(80).default(''),
-  imageFile: z.string().min(1).max(500),
+  /** Cover photo — basename or absolute site-media / CMS URL. */
+  imageFile: z.string().min(1).max(2000),
+  /** Extra photos for the event lightbox slider (cover is imageFile). */
+  imageFiles: z.array(z.string().max(2000)).max(8).optional().default([]),
   brand: z.string().max(120).optional(),
   videoFile: z
     .string()
     .max(40)
-    .regex(/^event-[1-6]\.(mp4|m4v|webm|mov)$/)
+    .regex(/^event-\d+\.(mp4|m4v|webm|mov)$/)
     .optional(),
 });
+
+export const hostessAssetsSchema = z
+  .object({
+    /** Basename (hero.jpg) or absolute public URL from site-media / Tally. */
+    hero: z.string().max(2000).optional().default(''),
+  })
+  .optional()
+  .default({ hero: '' });
 
 export const educationEntrySchema = z.object({
   id: z.string().min(1).max(40),
@@ -179,6 +190,20 @@ export const hostessSchema = z.object({
       level: z.string().min(1).max(40),
     }),
   ),
+  languagesByLocale: z
+    .object({
+      pl: z.array(z.object({ name: z.string().max(80).default(''), level: z.string().max(40).default('') })).optional(),
+      en: z.array(z.object({ name: z.string().max(80).default(''), level: z.string().max(40).default('') })).optional(),
+      es: z.array(z.object({ name: z.string().max(80).default(''), level: z.string().max(40).default('') })).optional(),
+    })
+    .optional(),
+  appearanceTextByLocale: z
+    .object({
+      pl: z.object({ hairColor: z.string().max(80).optional().default(''), eyeColor: z.string().max(80).optional().default('') }).optional(),
+      en: z.object({ hairColor: z.string().max(80).optional().default(''), eyeColor: z.string().max(80).optional().default('') }).optional(),
+      es: z.object({ hairColor: z.string().max(80).optional().default(''), eyeColor: z.string().max(80).optional().default('') }).optional(),
+    })
+    .optional(),
   languageCompetencies: z.array(z.string().min(1).max(120)).default([]),
   skills: z.array(z.string().min(1).max(120)).default([]),
   traits: z.array(z.string().min(1).max(120)).default([]),
@@ -193,7 +218,8 @@ export const hostessSchema = z.object({
     hasCar: false,
   }),
   employment: z.array(employmentEntrySchema).default([]),
-  events: z.array(hostessEventSchema).max(6).default([]),
+  events: z.array(hostessEventSchema).max(50).default([]),
+  assets: hostessAssetsSchema,
   experience: z.object({
     since: z.string().max(40).default(''),
     brands: z.string().max(500).default(''),
