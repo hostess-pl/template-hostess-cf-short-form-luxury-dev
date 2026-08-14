@@ -1,6 +1,6 @@
 import type { ImageMetadata } from 'astro';
 import type { Locale } from './site.config';
-import { appearanceTextForPublic, languagesForPublic, publicCopyForLocale } from '@/lib/cms/i18n';
+import { appearanceTextForPublic, eventTextForPublic, languagesForPublic, publicCopyForLocale } from '@/lib/cms/i18n';
 import { loadHostess } from '@/lib/hostess';
 
 let _bundleRef: ReturnType<typeof loadHostess> | null = null
@@ -511,27 +511,33 @@ function buildContentBundle() {
 
   const galleryEvents: FeaturedEvent[] = [...hostess.events]
     .sort((a, b) => eventSortKey(b.date).localeCompare(eventSortKey(a.date)))
-    .map((event) => ({
+    .map((event) => {
+    const eventDoc = event as unknown as Record<string, unknown>
+    const enText = eventTextForPublic(eventDoc, 'en')
+    const plText = eventTextForPublic(eventDoc, 'pl')
+    const esText = eventTextForPublic(eventDoc, 'es')
+    return {
     id: event.id,
     image: resolveEventImage(event.imageFile),
     video: resolveVideo(event.videoFile),
     date: eventYear(event.date),
     title: {
-      en: localizeText(event.title),
-      pl: localizeText(event.title),
-      es: localizeText(event.title),
+      en: enText.title,
+      pl: plText.title,
+      es: esText.title,
     },
     description: {
-      en: localizeText(event.description),
-      pl: localizeText(event.description),
-      es: localizeText(event.description),
+      en: enText.description,
+      pl: plText.description,
+      es: esText.description,
     },
     alt: {
-      en: event.title ? `${displayName} at ${event.title}` : `${displayName} portfolio`,
-      pl: event.title ? `${displayName} — ${event.title}` : `${displayName} — portfolio`,
-      es: event.title ? `${displayName} — ${event.title}` : `${displayName} — portfolio`,
+      en: enText.title ? `${displayName} at ${enText.title}` : `${displayName} portfolio`,
+      pl: plText.title ? `${displayName} — ${plText.title}` : `${displayName} — portfolio`,
+      es: esText.title ? `${displayName} — ${esText.title}` : `${displayName} — portfolio`,
     },
-  }));
+  }
+  });
 
   function employmentSortKey(job: { startDate?: string; endDate?: string; isOngoing?: boolean }) {
     const start = String(job.startDate || '').trim();
