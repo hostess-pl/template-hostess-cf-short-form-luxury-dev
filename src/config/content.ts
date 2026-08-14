@@ -1,5 +1,6 @@
 import type { ImageMetadata } from 'astro';
 import type { Locale } from './site.config';
+import { publicCopyForLocale } from '@/lib/cms/i18n';
 import { loadHostess } from '@/lib/hostess';
 
 let _bundleRef: ReturnType<typeof loadHostess> | null = null
@@ -494,33 +495,7 @@ function buildContentBundle() {
       : {};
 
   function copyFor(locale: 'en' | 'pl' | 'es') {
-    const localized = copyByLocale[locale];
-    const pl = copyByLocale.pl;
-    const bucketEmpty =
-      !localized ||
-      typeof localized !== 'object' ||
-      !Object.values(localized as Record<string, unknown>).some((v) => String(v || '').trim());
-    const base = !bucketEmpty ? localized : pl ?? hostessCopy;
-    const pick = (key: string) => {
-      const fromBase = base && typeof base === 'object' ? (base as Record<string, unknown>)[key] : '';
-      const fromFlat = (hostessCopy as Record<string, unknown>)[key];
-      return String(fromBase || fromFlat || '').trim();
-    };
-    return {
-      headline: pick('headline'),
-      greeting: pick('greeting'),
-      profile: pick('profile'),
-      aboutLead: pick('aboutLead'),
-      experienceSummary: pick('experienceSummary'),
-      galleryLabel: pick('galleryLabel'),
-      galleryTitle: pick('galleryTitle'),
-      aboutLabel: pick('aboutLabel'),
-      aboutTitle: pick('aboutTitle'),
-      experienceLabel: pick('experienceLabel'),
-      experienceTitle: pick('experienceTitle'),
-      contactLabel: pick('contactLabel'),
-      contactTitle: pick('contactTitle'),
-    };
+    return publicCopyForLocale(copyByLocale, hostessCopy as Record<string, unknown>, locale);
   }
   const copyHeadline = String(hostessCopy.headline || '').trim();
   const copyGreeting = String(hostessCopy.greeting || '').trim();
@@ -593,16 +568,16 @@ function buildContentBundle() {
 
     return {
       eyebrow: '',
-      headline: (typeof copyFor === 'function' ? copyFor(locale).headline : copyHeadline) || defaultHeadline(locale),
-      subheadlineIntro: (typeof copyFor === 'function' ? copyFor(locale).greeting : copyGreeting) || defaultGreeting(locale, displayName),
-      subheadline: (typeof copyFor === 'function' ? copyFor(locale).profile : '') || heroProfileLine,
+      headline: copyFor(locale).headline || (locale === 'pl' ? copyHeadline : '') || defaultHeadline(locale),
+      subheadlineIntro: copyFor(locale).greeting || (locale === 'pl' ? copyGreeting : '') || defaultGreeting(locale, displayName),
+      subheadline: copyFor(locale).profile || (locale === 'pl' ? heroProfileLine : ''),
       cta: locale === 'pl' ? 'Zapytaj' : locale === 'es' ? 'Consultar' : 'Enquire',
       ctaSecondary:
         locale === 'pl' ? 'Zobacz portfolio' : locale === 'es' ? 'Ver trabajo' : 'See the work',
       elegantLead: elegantCopy[locale].lead,
       elegantAccent: elegantCopy[locale].accent,
       elegantSuffix: elegantCopy[locale].suffix,
-      useUserHeadline: Boolean((typeof copyFor === 'function' ? copyFor(locale).headline : '') || copyHeadline),
+      useUserHeadline: Boolean(copyFor(locale).headline || (locale === 'pl' && copyHeadline)),
     };
   }
 
@@ -623,8 +598,8 @@ function buildContentBundle() {
 
     return {
       title: titles[locale],
-      lead: copyFor(locale).aboutLead || aboutLeadLine,
-      body: copyFor(locale).experienceSummary || aboutBody,
+      lead: copyFor(locale).aboutLead || (locale === 'pl' ? aboutLeadLine : ''),
+      body: copyFor(locale).experienceSummary || (locale === 'pl' ? aboutBody : ''),
       education: {
         label: educationLabels[locale],
         university: sharedUniversity || '—',
@@ -863,6 +838,7 @@ function buildContentBundle() {
 }
 
 function getContentBundle() {
+  // Cache keyed on overlay identity from loadHostess() (ALS), not baked JSON alone.
   const hostess = loadHostess();
   if (_bundle && _bundleRef === hostess) return _bundle;
   _bundleRef = hostess;
