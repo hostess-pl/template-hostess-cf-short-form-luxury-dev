@@ -34,7 +34,9 @@ const draftSiteSlug = getCmsSiteSlug();
 const portfolioPaletteStyle = portfolioPaletteCss(
   hostess.branding.palette,
   hostess.branding.templateKey,
+  hostess.branding,
 );
+const hasCustomHeadingColor = Boolean(hostess.branding.headingColor);
 const meta = seo[locale];
 const canonicalUrl = localeUrl(locale, siteConfig.url);
 const ogImage = await getImage({ src: heroImage, width: 1200, height: 630, format: 'jpg' });
@@ -60,6 +62,7 @@ const enabledLocales = [...activeLocales];
   data-consent-enabled={analyticsFlags.consentEnabled ? '1' : '0'}
   data-analytics-enabled={!showDraftBanner && analyticsFlags.analyticsEnabled ? '1' : '0'}
   data-review-available={reviewFlags.reviewAvailable ? '1' : '0'}
+  data-custom-heading-color={hasCustomHeadingColor ? 'true' : undefined}
 >
   <head>
     <meta charset="UTF-8" />
@@ -114,7 +117,12 @@ const enabledLocales = [...activeLocales];
       })();
     </script>
 
-  </head>
+    <style is:global>
+    html[data-custom-heading-color='true'] :is(h1, h2, h3, h4, h5, h6) {
+      color: var(--heading-color);
+    }
+  </style>
+</head>
   <body class:list={['font-sans antialiased', showDraftBanner && 'has-draft-banner']}>
     {showDraftBanner ? <PortfolioDraftBanner locale={locale} completion={draftCompletion} siteSlug={draftSiteSlug} /> : null}
     <slot />
